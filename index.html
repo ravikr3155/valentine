@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ritika 💖 Be My Valentine</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 360px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
+h1 {
+    color: #ff4d6d;
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+.buttons {
+    position: relative;
+    height: 120px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+}
+
+#noBtn {
+    background: #ddd;
+    color: #333;
+    position: absolute;
+    right: 0;
+}
+
+/* Hearts */
+.heart {
+    position: fixed;
+    top: -10px;
+    font-size: 20px;
+    animation: fall linear forwards;
+    color: #ff4d6d;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 14px;
+    top: -10px;
+    animation: confettiFall linear forwards;
+    z-index: 9999;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Firework */
+.firework {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: gold;
+    animation: explode 1s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--x), var(--y));
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Ritika 💖<br>Will you be my Valentine?</h1>
+
+    <div class="buttons">
+        <button id="yesBtn" onclick="yesClicked()">Yes ❤️</button>
+        <button id="noBtn">No 💔</button>
+    </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+
+/* NO button escape */
+noBtn.addEventListener("touchstart", moveNo);
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+function moveNo() {
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 60);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+/* Confetti Blast */
+function confettiBlast() {
+    const colors = ["#ff4d6d", "#ffd166", "#ffb703", "#ef476f"];
+    for (let i = 0; i < 120; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = 2 + Math.random() * 3 + "s";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 5000);
+    }
+}
+
+/* Fireworks */
+function firework(x, y) {
+    for (let i = 0; i < 40; i++) {
+        const spark = document.createElement("div");
+        spark.className = "firework";
+        spark.style.left = x + "px";
+        spark.style.top = y + "px";
+        spark.style.setProperty("--x", (Math.random() * 200 - 100) + "px");
+        spark.style.setProperty("--y", (Math.random() * 200 - 100) + "px");
+        document.body.appendChild(spark);
+        setTimeout(() => spark.remove(), 1000);
+    }
+}
+
+/* YES Click */
+function yesClicked() {
+    confettiBlast();
+
+    for (let i = 0; i < 6; i++) {
+        setTimeout(() => {
+            firework(
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight / 2
+            );
+        }, i * 250);
+    }
+
+    setTimeout(() => {
+        document.body.innerHTML = `
+        <div style="
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+            color:white;
+            text-align:center;
+            padding:20px;
+            font-family:'Segoe UI',sans-serif;
+        ">
+            <h1 style="font-size:38px;">Yayyy Ritika! 💖🥰</h1>
+            <p style="font-size:22px;">You just made my Valentine perfect 💘🎆</p>
+        </div>`;
+    }, 1800);
+}
+
+/* Heart Rain */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+}, 300);
+</script>
+
+</body>
+</html>
